@@ -1,9 +1,6 @@
 package zip.agil.layar.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +15,19 @@ import lombok.Setter;
 public class Movie {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(unique = true)
     private String slug;
 
     private String title;
 
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "uploader_id", referencedColumnName = "id")
+    private User uploader;
 
     @Column(name = "created_at")
     private Long createdAt;
