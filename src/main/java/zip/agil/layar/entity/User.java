@@ -2,16 +2,16 @@ package zip.agil.layar.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import zip.agil.layar.enumerate.UserRole;
+import zip.agil.layar.model.UserResponse;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Entity
 @Builder
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted_at = extract(epoch from now()) WHERE id = ?")
+@SQLRestriction(value = "deleted_at is null")
 public class User implements UserDetails {
 
     @Id
@@ -42,6 +44,9 @@ public class User implements UserDetails {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+    @Column(name = "deleted_at")
+    private Long deletedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,5 +71,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserResponse toResponse() {
+        return UserResponse.builder()
+                .id(getId())
+                .username(getUsername())
+                .fullName(getFullName())
+                .roles(getRoles())
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .build();
     }
 }

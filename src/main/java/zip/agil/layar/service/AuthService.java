@@ -52,7 +52,7 @@ public class AuthService {
         validationService.validate(request);
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username is already in use");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already in use");
         }
 
         User user = User.builder()
@@ -70,6 +70,7 @@ public class AuthService {
 
         return AuthUserResponse.builder()
                 .accessToken(token)
+                .accessTokenExpiredAt(jwtService.extractExpiration(token).getTime())
                 .build();
     }
 }
