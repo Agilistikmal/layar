@@ -44,6 +44,7 @@ public class AuthService {
 
         return AuthUserResponse.builder()
                 .accessToken(token)
+                .accessTokenExpiredAt(jwtService.extractExpiration(token).getTime())
                 .build();
     }
 
@@ -59,6 +60,8 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .fullName(request.getFullName())
                 .roles(UserRole.USER)
+                .createdAt(System.currentTimeMillis())
+                .updatedAt(System.currentTimeMillis())
                 .build();
 
         userRepository.save(user);
