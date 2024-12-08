@@ -1,13 +1,16 @@
 package zip.agil.layar.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import zip.agil.layar.entity.Movie;
 import zip.agil.layar.entity.User;
+import zip.agil.layar.model.CreateMovieBannerRequest;
 import zip.agil.layar.model.CreateMovieRequest;
+import zip.agil.layar.model.CreateMovieVideoRequest;
 import zip.agil.layar.model.UpdateMovieRequest;
 import zip.agil.layar.repository.MovieRepository;
 import zip.agil.layar.repository.UserRepository;
@@ -19,6 +22,12 @@ public class MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private MovieBannerService movieBannerService;
+
+    @Autowired
+    private MovieVideoService movieVideoService;
 
     @Autowired
     private UserRepository userRepository;
@@ -37,6 +46,7 @@ public class MovieService {
         return movieRepository.findBySlug(slug).orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional
     public Movie create(String userId, CreateMovieRequest request) {
         validationService.validate(request);
 
@@ -59,9 +69,18 @@ public class MovieService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Slug %s already exists", movie.getSlug()));
         }
 
+        for (CreateMovieBannerRequest requestBanner : request.getBanners()) {
+            movieBannerService.create(requestBanner);
+        }
+
+        for (CreateMovieVideoRequest requestVideo : request.getVideos()) {
+            movieVideoService.create(requestVideo);
+        }
+
         return movieRepository.save(movie);
     }
 
+    @Transactional
     public Movie update(String slug, UpdateMovieRequest request) {
         validationService.validate(request);
 
@@ -79,6 +98,7 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
+    @Transactional
     public Movie delete(String id) {
         Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         movieRepository.delete(movie);

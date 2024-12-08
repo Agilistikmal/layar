@@ -24,13 +24,11 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<List<User>>> findUsers() {
-        List<User> users = userService.findAll();
-
-        WebResponse<List<User>> response = WebResponse.<List<User>>builder()
+    public ResponseEntity<WebResponse<List<UserResponse>>> findUsers() {
+        WebResponse<List<UserResponse>> response = WebResponse.<List<UserResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(users)
+                .data(userService.findAll())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -39,12 +37,12 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(path = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<UserResponse>> findByUsername(Authentication authentication) {
-        User user = userService.findByUsername(authentication.getName());
+        UserResponse user = userService.findByUsername(authentication.getName());
 
         WebResponse<UserResponse> response = WebResponse.<UserResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(user.toResponse())
+                .data(user)
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -58,7 +56,7 @@ public class UserController {
         WebResponse<UserResponse> response = WebResponse.<UserResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("User updated successfully")
-                .data(userService.update(user.getId(), request).toResponse())
+                .data(userService.update(user.getId(), request))
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -72,7 +70,7 @@ public class UserController {
         WebResponse<UserResponse> response = WebResponse.<UserResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("User deleted successfully")
-                .data(userService.delete(user.getId()).toResponse())
+                .data(userService.delete(user.getId()))
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);

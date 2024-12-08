@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +25,10 @@ public class CreateMovieRequest {
     @NotBlank
     @Size(min = 3)
     private String description;
+
+    @NotBlank
+    private List<CreateMovieBannerRequest> banners;
+
+    @NotBlank
+    private List<CreateMovieVideoRequest> videos;
 }

@@ -1,5 +1,6 @@
 package zip.agil.layar.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,6 +49,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthUserResponse register(RegisterUserRequest request) {
         validationService.validate(request);
 

@@ -2,6 +2,7 @@ package zip.agil.layar.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import zip.agil.layar.enumerate.VideoQuality;
 
 @Getter
 @Setter
@@ -24,7 +25,8 @@ public class MovieVideo {
 
     private String name;
 
-    private String quality;
+    @Enumerated(EnumType.STRING)
+    private VideoQuality quality;
 
     @Column(name = "created_at")
     private Long createdAt;
