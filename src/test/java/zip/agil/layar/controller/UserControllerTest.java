@@ -31,9 +31,6 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
     private String token;
 
     @BeforeEach

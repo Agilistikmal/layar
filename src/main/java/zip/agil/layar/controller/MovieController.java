@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import zip.agil.layar.entity.Movie;
 import zip.agil.layar.entity.User;
 import zip.agil.layar.model.CreateMovieRequest;
+import zip.agil.layar.model.MovieResponse;
 import zip.agil.layar.model.UpdateMovieRequest;
 import zip.agil.layar.model.WebResponse;
 import zip.agil.layar.service.MovieService;
@@ -51,16 +53,20 @@ public class MovieController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<Movie>> create(Authentication authentication, @RequestBody CreateMovieRequest request) {
-        User user = (User) authentication.getPrincipal();
+    public ResponseEntity<WebResponse<MovieResponse>> create(Authentication authentication, @RequestBody CreateMovieRequest request) {
+        try {
+            User user = (User) authentication.getPrincipal();
 
-        WebResponse<Movie> response = WebResponse.<Movie>builder()
-                .status(HttpStatus.OK.value())
-                .message("Movie created successfully")
-                .data(movieService.create(user.getId(), request))
-                .build();
+            WebResponse<MovieResponse> response = WebResponse.<MovieResponse>builder()
+                    .status(HttpStatus.OK.value())
+                    .message("Movie created successfully")
+                    .data(movieService.create(user.getId(), request))
+                    .build();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

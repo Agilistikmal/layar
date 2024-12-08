@@ -26,9 +26,7 @@ public class CreateMovieRequest {
     @Size(min = 3)
     private String description;
 
-    @NotBlank
     private List<CreateMovieBannerRequest> banners;
 
-    @NotBlank
     private List<CreateMovieVideoRequest> videos;
 }

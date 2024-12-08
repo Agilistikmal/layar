@@ -20,9 +20,6 @@ public class MovieVideoService {
     private MovieVideoRepository movieVideoRepository;
 
     @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
     private ValidationService validationService;
 
     public List<MovieVideo> findAll() {
@@ -34,10 +31,8 @@ public class MovieVideoService {
     }
 
     @Transactional
-    public MovieVideo create(CreateMovieVideoRequest request) {
+    public MovieVideo create(Movie movie, CreateMovieVideoRequest request) {
         validationService.validate(request);
-
-        Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(EntityNotFoundException::new);
 
         MovieVideo movieVideo = MovieVideo.builder()
                 .name(request.getName())

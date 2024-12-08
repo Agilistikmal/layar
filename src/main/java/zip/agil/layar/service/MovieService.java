@@ -7,14 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import zip.agil.layar.entity.Movie;
+import zip.agil.layar.entity.MovieBanner;
+import zip.agil.layar.entity.MovieVideo;
 import zip.agil.layar.entity.User;
-import zip.agil.layar.model.CreateMovieBannerRequest;
-import zip.agil.layar.model.CreateMovieRequest;
-import zip.agil.layar.model.CreateMovieVideoRequest;
-import zip.agil.layar.model.UpdateMovieRequest;
+import zip.agil.layar.model.*;
 import zip.agil.layar.repository.MovieRepository;
 import zip.agil.layar.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,7 +47,7 @@ public class MovieService {
     }
 
     @Transactional
-    public Movie create(String userId, CreateMovieRequest request) {
+    public MovieResponse create(String userId, CreateMovieRequest request) {
         validationService.validate(request);
 
         User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
@@ -69,15 +69,17 @@ public class MovieService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Slug %s already exists", movie.getSlug()));
         }
 
+        List<MovieBanner> banners = new ArrayList<>();
         for (CreateMovieBannerRequest requestBanner : request.getBanners()) {
-            movieBannerService.create(requestBanner);
+            banners.add(movieBannerService.create(movie, requestBanner));
         }
 
+        List<MovieVideo> videos = new ArrayList<>();
         for (CreateMovieVideoRequest requestVideo : request.getVideos()) {
-            movieVideoService.create(requestVideo);
+            videos.add(movieVideoService.create(movie, requestVideo));
         }
 
-        return movieRepository.save(movie);
+        return movieRepository.save(movie).toResponse(banners, videos);
     }
 
     @Transactional

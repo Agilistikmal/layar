@@ -20,9 +20,6 @@ public class MovieBannerService {
     private MovieBannerRepository movieBannerRepository;
 
     @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
     private ValidationService validationService;
 
     public List<MovieBanner> findAll() {
@@ -34,10 +31,8 @@ public class MovieBannerService {
     }
 
     @Transactional
-    public MovieBanner create(CreateMovieBannerRequest request) {
+    public MovieBanner create(Movie movie, CreateMovieBannerRequest request) {
         validationService.validate(request);
-
-        Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(EntityNotFoundException::new);
 
         MovieBanner movieBanner = MovieBanner.builder()
                 .name(request.getName())

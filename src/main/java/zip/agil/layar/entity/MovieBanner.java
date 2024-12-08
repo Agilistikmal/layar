@@ -2,6 +2,9 @@ package zip.agil.layar.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import zip.agil.layar.model.MovieBannerResponse;
 
 @Getter
 @Setter
@@ -10,6 +13,8 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "movie_banners")
+@SQLDelete(sql = "UPDATE movie_banners SET deleted_at = extract(epoch from now()) WHERE id = ?")
+@SQLRestriction(value = "deleted_at is null")
 public class MovieBanner {
 
     @Id
@@ -29,4 +34,14 @@ public class MovieBanner {
 
     @Column(name = "updated_at")
     private Long updatedAt;
+
+    @Column(name = "deleted_at")
+    private Long deletedAt;
+
+    public MovieBannerResponse toResponse() {
+        return MovieBannerResponse.builder()
+                .name(name)
+                .url(url)
+                .build();
+    }
 }
