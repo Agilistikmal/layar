@@ -14,11 +14,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import zip.agil.layar.controller.ErrorController;
 import zip.agil.layar.middleware.AuthEntryPoint;
 import zip.agil.layar.middleware.AuthMiddleware;
-
-import javax.naming.AuthenticationException;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +37,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/api/auth/**").permitAll();
+                        auth.requestMatchers("/auth/**").permitAll();
 
                         auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 

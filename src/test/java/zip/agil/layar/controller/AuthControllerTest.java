@@ -47,7 +47,7 @@ class AuthControllerTest {
         registerUserRequest.setFullName("Agil Ghani Istikmal");
 
         mockMvc.perform(
-                post("/api/auth/register")
+                post("/auth/register")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserRequest))
@@ -71,7 +71,7 @@ class AuthControllerTest {
         registerUserRequest.setPassword("test12345");
 
         mockMvc.perform(
-                post("/api/auth/register")
+                post("/auth/register")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserRequest))
@@ -94,7 +94,7 @@ class AuthControllerTest {
 
         // Register first user
         mockMvc.perform(
-                post("/api/auth/register")
+                post("/auth/register")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserRequest))
@@ -109,17 +109,18 @@ class AuthControllerTest {
 
         // Register second user
         mockMvc.perform(
-                post("/api/auth/register")
+                post("/auth/register")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserRequest))
         ).andExpectAll(
-                status().isBadRequest()
+                status().isConflict()
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
             });
 
-            assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+            assertEquals(HttpStatus.CONFLICT.value(), response.getStatus());
+            assertEquals("Username agilistikmal already exists", response.getMessage());
         });
     }
 

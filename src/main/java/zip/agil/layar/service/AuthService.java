@@ -52,7 +52,7 @@ public class AuthService {
         validationService.validate(request);
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already in use");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Username %s already exists", request.getUsername()));
         }
 
         User user = User.builder()

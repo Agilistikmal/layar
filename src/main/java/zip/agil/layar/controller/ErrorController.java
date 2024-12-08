@@ -33,7 +33,7 @@ public class ErrorController {
                 .body(
                         WebResponse.<String>builder()
                                 .status(exception.getStatusCode().value())
-                                .message(exception.getMessage())
+                                .message(exception.getReason())
                                 .build()
                 );
     }

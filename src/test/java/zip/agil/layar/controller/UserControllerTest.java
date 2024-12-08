@@ -47,7 +47,7 @@ class UserControllerTest {
                 .build();
 
         mockMvc.perform(
-                post("/api/auth/register")
+                post("/auth/register")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerUserRequest))
@@ -68,7 +68,7 @@ class UserControllerTest {
     void testFindAllUserUnauthorized() throws Exception {
 
         mockMvc.perform(
-                get("/api/user")
+                get("/user")
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpectAll(
                 status().isUnauthorized()
@@ -79,7 +79,7 @@ class UserControllerTest {
     void testFindAllUserForbidden() throws Exception {
 
         mockMvc.perform(
-                get("/api/user")
+                get("/user")
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpectAll(
@@ -91,7 +91,7 @@ class UserControllerTest {
     void testGetCurrentUser() throws Exception {
 
         mockMvc.perform(
-                get("/api/user/current")
+                get("/user/current")
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpectAll(
@@ -113,7 +113,7 @@ class UserControllerTest {
                 .build();
 
         mockMvc.perform(
-                patch("/api/user/current")
+                put("/user/current")
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -133,7 +133,7 @@ class UserControllerTest {
     void testDeleteUser() throws Exception {
 
         mockMvc.perform(
-                delete("/api/user/current")
+                delete("/user/current")
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpectAll(

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import zip.agil.layar.model.AuthUserResponse;
 import zip.agil.layar.model.LoginUserRequest;
 import zip.agil.layar.model.RegisterUserRequest;
@@ -17,7 +16,7 @@ import zip.agil.layar.model.WebResponse;
 import zip.agil.layar.service.AuthService;
 
 @RestController
-@RequestMapping(path = "/api/auth")
+@RequestMapping(path = "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
