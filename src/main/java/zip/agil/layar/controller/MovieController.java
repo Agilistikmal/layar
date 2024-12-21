@@ -27,7 +27,7 @@ public class MovieController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<List<Movie>>> findMovies() {
+    public ResponseEntity<WebResponse<List<Movie>>> findMany() {
         List<Movie> movies = movieService.findAll();
 
         WebResponse<List<Movie>> response = WebResponse.<List<Movie>>builder()

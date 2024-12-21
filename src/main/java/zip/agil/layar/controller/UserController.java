@@ -24,7 +24,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<List<UserResponse>>> findUsers() {
+    public ResponseEntity<WebResponse<List<UserResponse>>> findMany() {
         WebResponse<List<UserResponse>> response = WebResponse.<List<UserResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
