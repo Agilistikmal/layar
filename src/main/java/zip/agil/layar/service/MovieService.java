@@ -93,16 +93,12 @@ public class MovieService {
         movie.setDescription(request.getDescription());
         movie.setUpdatedAt(System.currentTimeMillis());
 
-        if (movieRepository.existsBySlug(slug)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Slug %s already exists", movie.getSlug()));
-        }
-
         return movieRepository.save(movie);
     }
 
     @Transactional
-    public Movie delete(String id) {
-        Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Movie delete(String slug) {
+        Movie movie = movieRepository.findBySlug(slug).orElseThrow(EntityNotFoundException::new);
         movieRepository.delete(movie);
         return movie;
     }

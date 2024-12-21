@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateMovieRequest {
 
+    @NotBlank
     @Size(min = 3, max = 50)
     private String slug;
 
