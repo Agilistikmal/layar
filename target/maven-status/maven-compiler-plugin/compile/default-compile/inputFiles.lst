@@ -3,6 +3,7 @@
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/config/SecurityConfig.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/AuthController.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/ErrorController.java
+/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/MovieBannerController.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/MovieController.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/UserController.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/entity/Movie.java
@@ -27,6 +28,7 @@
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/UpdateMovieVideoRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/UpdateUserRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/UserResponse.java
+/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/VerifyTokenRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/WebResponse.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/repository/MovieBannerRepository.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/repository/MovieRepository.java
@@ -38,5 +40,6 @@
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/MovieService.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/MovieVideoService.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/SlugService.java
+/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/StorageService.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/UserService.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/service/ValidationService.java

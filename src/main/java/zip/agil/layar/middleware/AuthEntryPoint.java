@@ -1,6 +1,5 @@
 package zip.agil.layar.middleware;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -16,10 +15,10 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException
-    ) throws IOException, ServletException {
+    ) throws IOException {
         response.getWriter().write("{\n" +
                 "  \"status\": 401,\n" +
-                "  \"message\": \"UNAUTHORIZED\",\n" +
+                "  \"message\": \"" + authException.getMessage() + "\",\n" +
                 "  \"data\": null\n" +
                 "}");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

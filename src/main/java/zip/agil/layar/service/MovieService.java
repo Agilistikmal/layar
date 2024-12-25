@@ -7,14 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import zip.agil.layar.entity.Movie;
-import zip.agil.layar.entity.MovieBanner;
-import zip.agil.layar.entity.MovieVideo;
 import zip.agil.layar.entity.User;
 import zip.agil.layar.model.*;
 import zip.agil.layar.repository.MovieRepository;
 import zip.agil.layar.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,17 +66,7 @@ public class MovieService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Slug %s already exists", movie.getSlug()));
         }
 
-        List<MovieBanner> banners = new ArrayList<>();
-        for (CreateMovieBannerRequest requestBanner : request.getBanners()) {
-            banners.add(movieBannerService.create(movie, requestBanner));
-        }
-
-        List<MovieVideo> videos = new ArrayList<>();
-        for (CreateMovieVideoRequest requestVideo : request.getVideos()) {
-            videos.add(movieVideoService.create(movie, requestVideo));
-        }
-
-        return movieRepository.save(movie).toResponse(banners, videos);
+        return movieRepository.save(movie).toResponse();
     }
 
     @Transactional

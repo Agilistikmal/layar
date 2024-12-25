@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import zip.agil.layar.model.AuthUserResponse;
-import zip.agil.layar.model.LoginUserRequest;
-import zip.agil.layar.model.RegisterUserRequest;
-import zip.agil.layar.model.WebResponse;
+import zip.agil.layar.model.*;
 import zip.agil.layar.service.AuthService;
 
 @RestController
@@ -44,5 +41,22 @@ public class AuthController {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/verifyToken", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WebResponse<Object>> verifyToken(@RequestBody VerifyTokenRequest request) {
+        boolean isValid = authService.verifyToken(request);
+
+        if (!isValid) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+        }
+
+        WebResponse<Object> response = WebResponse.builder()
+                .status(HttpStatus.OK.value())
+                .message("Token verified successfully")
+                .data(null)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

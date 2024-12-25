@@ -4,12 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import zip.agil.layar.entity.Movie;
+import zip.agil.layar.entity.MovieBanner;
 import zip.agil.layar.entity.MovieVideo;
-import zip.agil.layar.model.CreateMovieVideoRequest;
 import zip.agil.layar.model.UpdateMovieVideoRequest;
 import zip.agil.layar.repository.MovieVideoRepository;
-import zip.agil.layar.repository.MovieRepository;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ public class MovieVideoService {
     @Autowired
     private ValidationService validationService;
 
+    @Autowired
+    private StorageService storageService;
+
     public List<MovieVideo> findAll() {
         return movieVideoRepository.findAll();
     }
@@ -31,13 +34,12 @@ public class MovieVideoService {
     }
 
     @Transactional
-    public MovieVideo create(Movie movie, CreateMovieVideoRequest request) {
-        validationService.validate(request);
+    public MovieVideo create(Movie movie, MultipartFile multipartFile) {
+
+        String fileName = storageService.upload(multipartFile);
 
         MovieVideo movieVideo = MovieVideo.builder()
-                .name(request.getName())
-                .url(request.getUrl())
-                .quality(request.getQuality())
+                .name(fileName)
                 .movie(movie)
                 .createdAt(System.currentTimeMillis())
                 .updatedAt(System.currentTimeMillis())

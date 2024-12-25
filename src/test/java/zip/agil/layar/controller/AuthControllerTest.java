@@ -10,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import zip.agil.layar.model.AuthUserResponse;
-import zip.agil.layar.model.RegisterUserRequest;
-import zip.agil.layar.model.WebResponse;
+import zip.agil.layar.model.*;
 import zip.agil.layar.repository.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -124,4 +122,47 @@ class AuthControllerTest {
         });
     }
 
+    @Test
+    void testVerifyToken() throws Exception {
+
+        RegisterUserRequest loginUserRequest = RegisterUserRequest.builder()
+                .username("agilistikmal")
+                .password("test12345")
+                .fullName("Agil Ghani Istikmal")
+                .build();
+
+        mockMvc.perform(
+                post("/auth/register")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginUserRequest))
+        ).andExpectAll(
+                status().isCreated()
+        ).andDo(result -> {
+            WebResponse<AuthUserResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+
+            VerifyTokenRequest verifyTokenRequest = VerifyTokenRequest.builder()
+                    .accessToken(response.getData().getAccessToken())
+                    .refreshToken(response.getData().getRefreshToken())
+                    .build();
+
+            mockMvc.perform(
+                    post("/auth/verifyToken")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(verifyTokenRequest))
+            ).andExpectAll(
+                    status().isOk()
+            ).andDo(resultVerifyToken -> {
+                WebResponse<AuthUserResponse> responseVerifyToken = objectMapper.readValue(resultVerifyToken.getResponse().getContentAsString(), new TypeReference<>() {
+                });
+
+                assertEquals(HttpStatus.OK.value(), responseVerifyToken.getStatus());
+            });
+        });
+
+    }
 }

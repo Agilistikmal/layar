@@ -1,11 +1,9 @@
 package zip.agil.layar.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import zip.agil.layar.entity.User;
 
 import java.util.List;
 

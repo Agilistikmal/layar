@@ -1,5 +1,6 @@
 package zip.agil.layar.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,12 +9,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.utils.IoUtils;
 import zip.agil.layar.entity.Movie;
 import zip.agil.layar.entity.MovieBanner;
 import zip.agil.layar.model.*;
 import zip.agil.layar.service.MovieBannerService;
 import zip.agil.layar.service.MovieService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,10 +33,10 @@ public class MovieBannerController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<List<MovieBanner>>> findMany() {
-        List<MovieBanner> movieBanners = movieBannerService.findAll();
+    public ResponseEntity<WebResponse<List<MovieBannerResponse>>> findMany() {
+        List<MovieBannerResponse> movieBanners = movieBannerService.findAll();
 
-        WebResponse<List<MovieBanner>> response = WebResponse.<List<MovieBanner>>builder()
+        WebResponse<List<MovieBannerResponse>> response = WebResponse.<List<MovieBannerResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
                 .data(movieBanners)
@@ -42,8 +47,8 @@ public class MovieBannerController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<MovieBanner>> findById(@PathVariable(name = "id") String id) {
-        WebResponse<MovieBanner> response = WebResponse.<MovieBanner>builder()
+    public ResponseEntity<WebResponse<MovieBannerResponse>> findById(@PathVariable(name = "id") String id) {
+        WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
                 .data(movieBannerService.findById(id))
@@ -52,21 +57,24 @@ public class MovieBannerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping(path = "/{id}/source", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] getSource(@PathVariable(name = "id") String id) throws IOException {
+        ResponseInputStream<GetObjectResponse> source = movieBannerService.getSource(id);
+
+        return IoUtils.toByteArray(source);
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WebResponse<MovieBanner>> create(@PathVariable("slug") String slug, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<WebResponse<MovieBannerResponse>> create(@PathVariable("slug") String slug, @RequestParam("file") MultipartFile file) {
         try {
             Movie movie = movieService.findBySlug(slug);
 
-            CreateMovieBannerRequest request = CreateMovieBannerRequest.builder()
-                    .name(file.getOriginalFilename())
-                    .url("")
-                    .build();
-
-            WebResponse<MovieBanner> response = WebResponse.<MovieBanner>builder()
+            WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
                     .status(HttpStatus.OK.value())
                     .message("Movie created successfully")
-                    .data(movieBannerService.create(movie, request))
+                    .data(movieBannerService.create(movie, file))
                     .build();
 
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -77,8 +85,8 @@ public class MovieBannerController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<MovieBanner>> update(@PathVariable(name = "id") String id, @RequestBody UpdateMovieBannerRequest request) {
-        WebResponse<MovieBanner> response = WebResponse.<MovieBanner>builder()
+    public ResponseEntity<WebResponse<MovieBannerResponse>> update(@PathVariable(name = "id") String id, @RequestBody UpdateMovieBannerRequest request) {
+        WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Movie updated successfully")
                 .data(movieBannerService.update(id, request))
@@ -89,16 +97,16 @@ public class MovieBannerController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WebResponse<MovieBanner>> change(@PathVariable(name = "id") String id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<WebResponse<MovieBannerResponse>> change(@PathVariable(name = "id") String id, @RequestParam("file") MultipartFile file) {
 
-        MovieBanner movieBanner = movieBannerService.findById(id);
+        MovieBannerResponse movieBanner = movieBannerService.findById(id);
 
         UpdateMovieBannerRequest request = UpdateMovieBannerRequest.builder()
                 .name(movieBanner.getName())
                 .url("")
                 .build();
 
-        WebResponse<MovieBanner> response = WebResponse.<MovieBanner>builder()
+        WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Movie updated successfully")
                 .data(movieBannerService.update(id, request))
@@ -109,9 +117,9 @@ public class MovieBannerController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<WebResponse<MovieBanner>> delete(@PathVariable(name = "id") String id) {
+    public ResponseEntity<WebResponse<MovieBannerResponse>> delete(@PathVariable(name = "id") String id) {
 
-        WebResponse<MovieBanner> response = WebResponse.<MovieBanner>builder()
+        WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Movie deleted successfully")
                 .data(movieBannerService.delete(id))

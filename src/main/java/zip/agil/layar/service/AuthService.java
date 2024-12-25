@@ -13,6 +13,7 @@ import zip.agil.layar.enumerate.UserRole;
 import zip.agil.layar.model.AuthUserResponse;
 import zip.agil.layar.model.LoginUserRequest;
 import zip.agil.layar.model.RegisterUserRequest;
+import zip.agil.layar.model.VerifyTokenRequest;
 import zip.agil.layar.repository.UserRepository;
 
 @Service
@@ -41,11 +42,14 @@ public class AuthService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
 
-        String token = jwtService.generateToken(user);
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
         return AuthUserResponse.builder()
-                .accessToken(token)
-                .accessTokenExpiredAt(jwtService.extractExpiration(token).getTime())
+                .accessToken(accessToken)
+                .accessTokenExpiredAt(jwtService.extractExpiration(accessToken).getTime())
+                .refreshToken(refreshToken)
+                .refreshTokenExpiredAt(jwtService.extractExpiration(refreshToken).getTime())
                 .build();
     }
 
@@ -68,11 +72,23 @@ public class AuthService {
 
         userRepository.save(user);
 
-        String token = jwtService.generateToken(user);
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
         return AuthUserResponse.builder()
-                .accessToken(token)
-                .accessTokenExpiredAt(jwtService.extractExpiration(token).getTime())
+                .accessToken(accessToken)
+                .accessTokenExpiredAt(jwtService.extractExpiration(accessToken).getTime())
+                .refreshToken(refreshToken)
+                .refreshTokenExpiredAt(jwtService.extractExpiration(refreshToken).getTime())
                 .build();
+    }
+
+    public boolean verifyToken(VerifyTokenRequest request) {
+        validationService.validate(request);
+
+        boolean isAccessTokenValid = jwtService.validateToken(request.getAccessToken());
+        boolean isRefreshTokenValid = jwtService.validateToken(request.getRefreshToken());
+
+        return isAccessTokenValid && isRefreshTokenValid;
     }
 }

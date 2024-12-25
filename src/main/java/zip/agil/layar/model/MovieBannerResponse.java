@@ -11,7 +11,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MovieBannerResponse {
 
+    private String id;
+
     private String url;
 
     private String name;
+
+    private Long createdAt;
+
+    private Long updatedAt;
+
+    private Long deletedAt;
 }

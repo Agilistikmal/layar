@@ -40,8 +40,12 @@ public class MovieBanner {
 
     public MovieBannerResponse toResponse() {
         return MovieBannerResponse.builder()
+                .id(id)
                 .name(name)
                 .url(url)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
                 .build();
     }
 }

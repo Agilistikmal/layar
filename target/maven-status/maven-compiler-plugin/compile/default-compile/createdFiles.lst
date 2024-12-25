@@ -5,6 +5,7 @@ zip/agil/layar/model/WebResponse.class
 zip/agil/layar/model/MovieBannerResponse.class
 zip/agil/layar/model/CreateMovieRequest.class
 zip/agil/layar/model/MovieVideoResponse.class
+zip/agil/layar/model/VerifyTokenRequest$VerifyTokenRequestBuilder.class
 zip/agil/layar/controller/AuthController.class
 zip/agil/layar/service/JWTService.class
 zip/agil/layar/model/LoginUserRequest$LoginUserRequestBuilder.class
@@ -19,6 +20,7 @@ zip/agil/layar/model/UpdateMovieRequest$UpdateMovieRequestBuilder.class
 zip/agil/layar/service/AuthService.class
 zip/agil/layar/model/WebResponse$WebResponseBuilder.class
 zip/agil/layar/controller/UserController.class
+zip/agil/layar/model/VerifyTokenRequest.class
 zip/agil/layar/entity/User.class
 zip/agil/layar/model/UpdateUserRequest$UpdateUserRequestBuilder.class
 zip/agil/layar/model/UserResponse$UserResponseBuilder.class
@@ -37,6 +39,7 @@ zip/agil/layar/model/UpdateMovieVideoRequest.class
 zip/agil/layar/model/MovieResponse$MovieResponseBuilder.class
 zip/agil/layar/entity/MovieBanner.class
 zip/agil/layar/model/LoginUserRequest.class
+zip/agil/layar/controller/MovieBannerController.class
 zip/agil/layar/model/UpdateMovieBannerRequest.class
 zip/agil/layar/enumerate/UserRole.class
 zip/agil/layar/controller/MovieController.class
@@ -48,6 +51,7 @@ zip/agil/layar/model/UserResponse.class
 zip/agil/layar/controller/ErrorController.class
 zip/agil/layar/repository/MovieRepository.class
 zip/agil/layar/service/MovieService.class
+zip/agil/layar/service/StorageService.class
 zip/agil/layar/enumerate/VideoQuality.class
 zip/agil/layar/model/UpdateUserRequest.class
 zip/agil/layar/repository/MovieVideoRepository.class

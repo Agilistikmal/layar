@@ -97,7 +97,7 @@ class MovieControllerTest {
                 post("/auth/authenticate")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registerUserRequest))
+                        .content(objectMapper.writeValueAsString(loginUserRequest))
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
@@ -113,27 +113,9 @@ class MovieControllerTest {
     @Test
     void testCreateMovie() throws Exception {
 
-        List<CreateMovieBannerRequest> banners = new ArrayList<>();
-        List<CreateMovieVideoRequest> videos = new ArrayList<>();
-
-        CreateMovieBannerRequest createMovieBannerRequest = CreateMovieBannerRequest.builder()
-                .name("Banner 1 Movie 1")
-                .url("https://storage.agil.zip/images/banner1.png")
-                .build();
-        banners.add(createMovieBannerRequest);
-
-        CreateMovieVideoRequest createMovieVideoRequest = CreateMovieVideoRequest.builder()
-                .name("Video 1 Movie 1")
-                .url("https://storage.agil.zip/videos/video1_high.mp4")
-                .quality(VideoQuality.HIGH)
-                .build();
-        videos.add(createMovieVideoRequest);
-
         CreateMovieRequest createMovieRequest = CreateMovieRequest.builder()
                 .title("Movie 1")
                 .description("Movie 1 description")
-                .banners(banners)
-                .videos(videos)
                 .build();
 
         mockMvc.perform(
@@ -153,52 +135,11 @@ class MovieControllerTest {
     }
 
     @Test
-    void testCreateMovieWithoutBannerAndVideo() throws Exception {
-        CreateMovieRequest createMovieRequest = CreateMovieRequest.builder()
-                .title("Movie 1")
-                .description("Movie 1 description")
-                .build();
-
-        mockMvc.perform(
-                post("/movie")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + token)
-                        .content(objectMapper.writeValueAsString(createMovieRequest))
-        ).andExpectAll(
-                status().isBadRequest()
-        ).andDo(result -> {
-            WebResponse<MovieResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
-            });
-
-            assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
-            assertTrue(response.getMessage().contains("must not be null"));
-        });
-    }
-
-    @Test
     void testUpdateMovie() throws Exception {
-        List<CreateMovieBannerRequest> banners = new ArrayList<>();
-        List<CreateMovieVideoRequest> videos = new ArrayList<>();
-
-        CreateMovieBannerRequest createMovieBannerRequest = CreateMovieBannerRequest.builder()
-                .name("Banner 1 Movie 1")
-                .url("https://storage.agil.zip/images/banner1.png")
-                .build();
-        banners.add(createMovieBannerRequest);
-
-        CreateMovieVideoRequest createMovieVideoRequest = CreateMovieVideoRequest.builder()
-                .name("Video 1 Movie 1")
-                .url("https://storage.agil.zip/videos/video1_high.mp4")
-                .quality(VideoQuality.HIGH)
-                .build();
-        videos.add(createMovieVideoRequest);
 
         CreateMovieRequest createMovieRequest = CreateMovieRequest.builder()
                 .title("Movie 1")
                 .description("Movie 1 description")
-                .banners(banners)
-                .videos(videos)
                 .build();
 
         mockMvc.perform(
@@ -241,27 +182,10 @@ class MovieControllerTest {
 
     @Test
     void testDeleteMovie() throws Exception {
-        List<CreateMovieBannerRequest> banners = new ArrayList<>();
-        List<CreateMovieVideoRequest> videos = new ArrayList<>();
-
-        CreateMovieBannerRequest createMovieBannerRequest = CreateMovieBannerRequest.builder()
-                .name("Banner 1 Movie 1")
-                .url("https://storage.agil.zip/images/banner1.png")
-                .build();
-        banners.add(createMovieBannerRequest);
-
-        CreateMovieVideoRequest createMovieVideoRequest = CreateMovieVideoRequest.builder()
-                .name("Video 1 Movie 1")
-                .url("https://storage.agil.zip/videos/video1_high.mp4")
-                .quality(VideoQuality.HIGH)
-                .build();
-        videos.add(createMovieVideoRequest);
 
         CreateMovieRequest createMovieRequest = CreateMovieRequest.builder()
                 .title("Movie 1")
                 .description("Movie 1 description")
-                .banners(banners)
-                .videos(videos)
                 .build();
 
         mockMvc.perform(

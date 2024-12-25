@@ -1,5 +1,6 @@
 package zip.agil.layar.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -44,6 +45,19 @@ public class Movie {
 
     @Column(name = "deleted_at")
     private Long deletedAt;
+
+    public MovieResponse toResponse() {
+        return MovieResponse.builder()
+                .id(id)
+                .slug(slug)
+                .title(title)
+                .description(description)
+                .uploader(uploader.toResponse())
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .deletedAt(deletedAt)
+                .build();
+    }
 
     public MovieResponse toResponse(List<MovieBanner> banners, List<MovieVideo> videos) {
         List<MovieBannerResponse> bannerResponses = new ArrayList<>();
