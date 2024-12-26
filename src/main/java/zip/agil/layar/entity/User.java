@@ -7,8 +7,10 @@ import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import zip.agil.layar.enumerate.UserRole;
 import zip.agil.layar.model.UserResponse;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -35,13 +37,8 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-///
-/// TODO: ROLE MANY TO MANY
-///
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_name", referencedColumnName = "name")
-    private List<UserRole> roles;
+    @Enumerated(EnumType.STRING)
+    private UserRole roles;
 
     @Column(name = "created_at")
     private Long createdAt;
@@ -54,7 +51,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles.name()));
+        return roles.getAuthorities();
     }
 
     @Override

@@ -2,7 +2,6 @@ package zip.agil.layar.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import zip.agil.layar.entity.Movie;
 import zip.agil.layar.entity.User;
 import zip.agil.layar.enumerate.UserRole;
-import zip.agil.layar.enumerate.VideoQuality;
 import zip.agil.layar.model.*;
-import zip.agil.layar.repository.MovieBannerRepository;
-import zip.agil.layar.repository.MovieRepository;
-import zip.agil.layar.repository.MovieVideoRepository;
-import zip.agil.layar.repository.UserRepository;
+import zip.agil.layar.repository.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -85,7 +77,7 @@ class MovieControllerTest {
 
         // Set user to ADMIN
         User user = userRepository.findByUsername("agilistikmal").orElseThrow();
-        user.setRoles(UserRole.ADMIN);
+        user.setRoles(UserRole.USER);
         userRepository.save(user);
 
         LoginUserRequest loginUserRequest = LoginUserRequest.builder()

@@ -31,7 +31,7 @@ public class MovieBannerController {
     @Autowired
     private MovieService movieService;
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<List<MovieBannerResponse>>> findMany() {
         List<MovieBannerResponse> movieBanners = movieBannerService.findAll();
@@ -45,7 +45,7 @@ public class MovieBannerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<MovieBannerResponse>> findById(@PathVariable(name = "id") String id) {
         WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
@@ -57,7 +57,7 @@ public class MovieBannerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "/{id}/source", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[] getSource(@PathVariable(name = "id") String id) throws IOException {
         ResponseInputStream<GetObjectResponse> source = movieBannerService.getSource(id);
@@ -65,7 +65,7 @@ public class MovieBannerController {
         return IoUtils.toByteArray(source);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WebResponse<MovieBannerResponse>> create(@PathVariable("slug") String slug, @RequestParam("file") MultipartFile file) {
         try {
@@ -83,7 +83,7 @@ public class MovieBannerController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_EDIT')")
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<MovieBannerResponse>> update(@PathVariable(name = "id") String id, @RequestBody UpdateMovieBannerRequest request) {
         WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
@@ -95,27 +95,7 @@ public class MovieBannerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WebResponse<MovieBannerResponse>> change(@PathVariable(name = "id") String id, @RequestParam("file") MultipartFile file) {
-
-        MovieBannerResponse movieBanner = movieBannerService.findById(id);
-
-        UpdateMovieBannerRequest request = UpdateMovieBannerRequest.builder()
-                .name(movieBanner.getName())
-                .url("")
-                .build();
-
-        WebResponse<MovieBannerResponse> response = WebResponse.<MovieBannerResponse>builder()
-                .status(HttpStatus.OK.value())
-                .message("Movie updated successfully")
-                .data(movieBannerService.update(id, request))
-                .build();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_DELETE')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<WebResponse<MovieBannerResponse>> delete(@PathVariable(name = "id") String id) {
 

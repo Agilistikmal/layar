@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +17,9 @@ import zip.agil.layar.model.LoginUserRequest;
 import zip.agil.layar.model.RegisterUserRequest;
 import zip.agil.layar.model.VerifyTokenRequest;
 import zip.agil.layar.repository.UserRepository;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class AuthService {
@@ -37,7 +42,12 @@ public class AuthService {
     public AuthUserResponse authenticate(LoginUserRequest request) {
         validationService.validate(request);
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));

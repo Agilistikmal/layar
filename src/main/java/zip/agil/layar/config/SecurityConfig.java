@@ -36,19 +36,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/auth/**").permitAll();
-
-                        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-
-                        auth.anyRequest().authenticated();
-                    }
-                )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .addFilterBefore(authMiddleware, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(auth -> {
+                            auth.requestMatchers("/auth/**").permitAll();
+
+                            auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
+                            auth.anyRequest().authenticated();
+                        }
+                )
                 .build();
     }
 

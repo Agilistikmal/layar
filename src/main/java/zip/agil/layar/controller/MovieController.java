@@ -25,7 +25,7 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<List<Movie>>> findMany() {
         List<Movie> movies = movieService.findAll();
@@ -39,7 +39,7 @@ public class MovieController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "/{slug}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<Movie>> findBySlug(@PathVariable(name = "slug") String slug) {
         WebResponse<Movie> response = WebResponse.<Movie>builder()
@@ -51,7 +51,7 @@ public class MovieController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<MovieResponse>> create(Authentication authentication, @RequestBody CreateMovieRequest request) {
         try {
@@ -69,7 +69,7 @@ public class MovieController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_EDIT')")
     @PutMapping(path = "/{slug}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<Movie>> update(@PathVariable(name = "slug") String slug, @RequestBody UpdateMovieRequest request) {
         WebResponse<Movie> response = WebResponse.<Movie>builder()
@@ -81,7 +81,7 @@ public class MovieController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_DELETE')")
     @DeleteMapping(path = "/{slug}")
     public ResponseEntity<WebResponse<Movie>> delete(@PathVariable(name = "slug") String slug) {
 

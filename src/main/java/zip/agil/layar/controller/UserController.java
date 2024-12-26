@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_READ')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<List<UserResponse>>> findMany() {
         WebResponse<List<UserResponse>> response = WebResponse.<List<UserResponse>>builder()
@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<UserResponse>> findByUsername(Authentication authentication) {
         UserResponse user = userService.findByUsername(authentication.getName());
@@ -48,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_EDIT')")
     @PutMapping(path = "/current", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<UserResponse>> updateCurrent(Authentication authentication, @RequestBody UpdateUserRequest request) {
         User user = (User) authentication.getPrincipal();
@@ -62,7 +62,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping(path = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WebResponse<UserResponse>> deleteCurrent(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
