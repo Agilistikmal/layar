@@ -37,6 +37,12 @@ public class Movie {
     @JoinColumn(name = "uploader_id", referencedColumnName = "id")
     private User uploader;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MovieBanner> banners;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MovieVideo> videos;
+
     @Column(name = "created_at")
     private Long createdAt;
 
@@ -53,32 +59,8 @@ public class Movie {
                 .title(title)
                 .description(description)
                 .uploader(uploader.toResponse())
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
-                .deletedAt(deletedAt)
-                .build();
-    }
-
-    public MovieResponse toResponse(List<MovieBanner> banners, List<MovieVideo> videos) {
-        List<MovieBannerResponse> bannerResponses = new ArrayList<>();
-        List<MovieVideoResponse> videoResponses = new ArrayList<>();
-
-        for (MovieBanner banner : banners) {
-            bannerResponses.add(banner.toResponse());
-        }
-
-        for (MovieVideo video : videos) {
-            videoResponses.add(video.toResponse());
-        }
-
-        return MovieResponse.builder()
-                .id(id)
-                .slug(slug)
-                .title(title)
-                .description(description)
-                .uploader(uploader.toResponse())
-                .banners(bannerResponses)
-                .videos(videoResponses)
+                .banners(banners.stream().map(MovieBanner::toResponse).toList())
+                .videos(videos.stream().map(MovieVideo::toResponse).toList())
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .deletedAt(deletedAt)

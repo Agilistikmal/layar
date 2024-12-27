@@ -1,5 +1,6 @@
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/LayarApplication.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/config/ApplicationConfig.java
+/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/config/S3Config.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/config/SecurityConfig.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/AuthController.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/controller/ErrorController.java
@@ -10,14 +11,13 @@
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/entity/MovieBanner.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/entity/MovieVideo.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/entity/User.java
+/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/enumerate/UserPermission.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/enumerate/UserRole.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/enumerate/VideoQuality.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/middleware/AuthEntryPoint.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/middleware/AuthMiddleware.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/AuthUserResponse.java
-/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/CreateMovieBannerRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/CreateMovieRequest.java
-/home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/CreateMovieVideoRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/LoginUserRequest.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/MovieBannerResponse.java
 /home/agilistikmal/Projects/personal/layar/src/main/java/zip/agil/layar/model/MovieResponse.java

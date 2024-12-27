@@ -77,7 +77,7 @@ class MovieControllerTest {
 
         // Set user to ADMIN
         User user = userRepository.findByUsername("agilistikmal").orElseThrow();
-        user.setRoles(UserRole.USER);
+        user.setRoles(UserRole.ADMIN);
         userRepository.save(user);
 
         LoginUserRequest loginUserRequest = LoginUserRequest.builder()

@@ -2,6 +2,7 @@ zip/agil/layar/entity/MovieVideo$MovieVideoBuilder.class
 zip/agil/layar/model/MovieResponse.class
 zip/agil/layar/model/MovieVideoResponse$MovieVideoResponseBuilder.class
 zip/agil/layar/model/WebResponse.class
+zip/agil/layar/enumerate/UserPermission.class
 zip/agil/layar/model/MovieBannerResponse.class
 zip/agil/layar/model/CreateMovieRequest.class
 zip/agil/layar/model/MovieVideoResponse.class
@@ -14,8 +15,8 @@ zip/agil/layar/entity/MovieBanner$MovieBannerBuilder.class
 zip/agil/layar/service/ValidationService.class
 zip/agil/layar/model/UpdateMovieRequest.class
 zip/agil/layar/repository/MovieBannerRepository.class
-zip/agil/layar/model/CreateMovieVideoRequest$CreateMovieVideoRequestBuilder.class
 zip/agil/layar/middleware/AuthMiddleware.class
+zip/agil/layar/config/S3Config.class
 zip/agil/layar/model/UpdateMovieRequest$UpdateMovieRequestBuilder.class
 zip/agil/layar/service/AuthService.class
 zip/agil/layar/model/WebResponse$WebResponseBuilder.class
@@ -27,13 +28,10 @@ zip/agil/layar/model/UserResponse$UserResponseBuilder.class
 zip/agil/layar/config/ApplicationConfig.class
 zip/agil/layar/entity/MovieVideo.class
 zip/agil/layar/entity/Movie$MovieBuilder.class
-zip/agil/layar/model/CreateMovieBannerRequest.class
 zip/agil/layar/service/MovieBannerService.class
 zip/agil/layar/model/AuthUserResponse$AuthUserResponseBuilder.class
-zip/agil/layar/model/CreateMovieVideoRequest.class
 zip/agil/layar/entity/User$UserBuilder.class
 zip/agil/layar/middleware/AuthEntryPoint.class
-zip/agil/layar/model/CreateMovieBannerRequest$CreateMovieBannerRequestBuilder.class
 zip/agil/layar/model/MovieBannerResponse$MovieBannerResponseBuilder.class
 zip/agil/layar/model/UpdateMovieVideoRequest.class
 zip/agil/layar/model/MovieResponse$MovieResponseBuilder.class

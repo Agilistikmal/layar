@@ -12,6 +12,7 @@ import zip.agil.layar.model.*;
 import zip.agil.layar.repository.MovieRepository;
 import zip.agil.layar.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,6 +55,8 @@ public class MovieService {
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .uploader(user)
+                .banners(new ArrayList<>())
+                .videos(new ArrayList<>())
                 .createdAt(System.currentTimeMillis())
                 .updatedAt(System.currentTimeMillis())
                 .build();

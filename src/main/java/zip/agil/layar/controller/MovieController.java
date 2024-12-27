@@ -17,6 +17,7 @@ import zip.agil.layar.model.WebResponse;
 import zip.agil.layar.service.MovieService;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/movie")
@@ -27,13 +28,17 @@ public class MovieController {
 
     @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<List<Movie>>> findMany() {
+    public ResponseEntity<WebResponse<List<MovieResponse>>> findMany() {
         List<Movie> movies = movieService.findAll();
 
-        WebResponse<List<Movie>> response = WebResponse.<List<Movie>>builder()
+        List<MovieResponse> movieResponses = movies
+                .stream()
+                .map(Movie::toResponse).toList();
+
+        WebResponse<List<MovieResponse>> response = WebResponse.<List<MovieResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(movies)
+                .data(movieResponses)
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -41,11 +46,11 @@ public class MovieController {
 
     @PreAuthorize("hasAuthority('USER_READ')")
     @GetMapping(path = "/{slug}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WebResponse<Movie>> findBySlug(@PathVariable(name = "slug") String slug) {
-        WebResponse<Movie> response = WebResponse.<Movie>builder()
+    public ResponseEntity<WebResponse<MovieResponse>> findBySlug(@PathVariable(name = "slug") String slug) {
+        WebResponse<MovieResponse> response = WebResponse.<MovieResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(movieService.findBySlug(slug))
+                .data(movieService.findBySlug(slug).toResponse())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);

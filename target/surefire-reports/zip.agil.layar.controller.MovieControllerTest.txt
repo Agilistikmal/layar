@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: zip.agil.layar.controller.MovieControllerTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.138 s -- in zip.agil.layar.controller.MovieControllerTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.200 s -- in zip.agil.layar.controller.MovieControllerTest
