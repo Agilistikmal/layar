@@ -28,13 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: safatanc/layar:staging
-      - name: Rebuild layar
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            docker compose pull layar && docker compose up -d layar
+          tags: safatanc/layar:latest
